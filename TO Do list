@@ -1,84 +1,62 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-class Task {
-    private String description;
-    private boolean isCompleted;
-
-    public Task(String description) {
-        this.description = description;
-        this.isCompleted = false;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public boolean isCompleted() {
-        return isCompleted;
-    }
-
-    public void completeTask() {
-        this.isCompleted = true;
-    }
-
-    @Override
-    public String toString() {
-        return (isCompleted ? "[x] " : "[ ] ") + description;
-    }
-}
-
 public class ToDoList {
-    private ArrayList<Task> tasks;
-
-    public ToDoList() {
-        tasks = new ArrayList<>();
-    }
-
-    public void addTask(String description) {
-        tasks.add(new Task(description));
-    }
-
-    public void completeTask(int index) {
-        if (index >= 0 && index < tasks.size()) {
-            tasks.get(index).completeTask();
-        } else {
-            System.out.println("Invalid task number.");
-        }
-    }
-
-    public void showTasks() {
-        for (int i = 0; i < tasks.size(); i++) {
-            System.out.println((i + 1) + ". " + tasks.get(i));
-        }
-    }
-
     public static void main(String[] args) {
-        ToDoList toDoList = new ToDoList();
-        Scanner scanner = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
+        ArrayList<String> tasks = new ArrayList<>();
         int choice;
 
         do {
-            System.out.println("1. Add Task\n2. Complete Task\n3. Show Tasks\n4. Exit\nChoose an option: ");
-            choice = scanner.nextInt();
-            scanner.nextLine(); // consume newline
+            System.out.println("\n====== TO-DO LIST ======");
+            System.out.println("1. View Tasks");
+            System.out.println("2. Add Task");
+            System.out.println("3. Remove Task");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice (1-4): ");
+            choice = sc.nextInt();
+            sc.nextLine();  // Clear buffer
+
             switch (choice) {
                 case 1:
-                    System.out.print("Enter task description: ");
-                    String description = scanner.nextLine();
-                    toDoList.addTask(description);
+                    System.out.println("\nYour Tasks:");
+                    if (tasks.isEmpty()) {
+                        System.out.println("No tasks yet.");
+                    } else {
+                        for (int i = 0; i < tasks.size(); i++) {
+                            System.out.println((i + 1) + ". " + tasks.get(i));
+                        }
+                    }
                     break;
+
                 case 2:
-                    System.out.print("Enter task number to complete: ");
-                    int taskNumber = scanner.nextInt();
-                    toDoList.completeTask(taskNumber - 1);
+                    System.out.print("Enter a new task: ");
+                    String newTask = sc.nextLine();
+                    tasks.add(newTask);
+                    System.out.println("Task added.");
                     break;
+
                 case 3:
-                    toDoList.showTasks();
+                    System.out.print("Enter task number to remove: ");
+                    int removeIndex = sc.nextInt() - 1;
+                    if (removeIndex >= 0 && removeIndex < tasks.size()) {
+                        tasks.remove(removeIndex);
+                        System.out.println("Task removed.");
+                    } else {
+                        System.out.println("Invalid task number.");
+                    }
                     break;
+
+                case 4:
+                    System.out.println("Exiting To-Do List App.");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice. Try again.");
             }
+
         } while (choice != 4);
 
-        scanner.close();
+        sc.close();
     }
 }
